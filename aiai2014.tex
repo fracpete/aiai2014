@@ -1,8 +1,3 @@
-% This is LLNCS.DEM the demonstration file of
-% the LaTeX macro package from Springer-Verlag
-% for Lecture Notes in Computer Science,
-% version 2.4 for LaTeX2e as of 16. April 2010
-%
 \documentclass{llncs}
 %
 \usepackage{makeidx}  % allows for indexgeneration
@@ -128,6 +123,54 @@ ADAMS - meta-flows, S2000
     2. \$100M saved through improved decision making provided by an ML system $\rightarrow$ S2000
   \item Lack of Follow-through \\
 	ADAMS $\rightarrow$ easily integrate ML system into business processes (opposed to plain Weka)
+
+\subsection{NIR}
+\subsubsection{Introduction}
+The regression method of choice for most practitioners working with near infrared spectroscopy (NIR) datasets is PLS regression. This method is fast, accurate, straightforward to implement and requires the tuning of a single parameter to maximize performance. Typically it is applied to relatively small datasets, those with fewer than 50 samples. In this study we introduce some known and some novel methods for handling NIR data and compare their performance against PLS regression for a range of NIR datasets of differing size.
+
+\subsubsection{Materials and Methods}
+All data in this study originates from a FOSS 5000 instrument. The raw data is down sampled to 170 values per sample and smoothed using a Savitzky-Golay filter with a window of size 15. Two validation studies are undertaken both employing 10x10 cross-validation. The estimated RMSEP, is obtained as an average over 100 runs. In each run 90\% of the data is used for training a model and 10\% is held-out for testing. The corrected re-sampled t-test is then used to perform pair wise comparison between methods testing for significant differences. The first study varies the number of components (from 5 to 65) for PLS regression (PLSR) in order to find the optimum performance for that method on each dataset. The second study then carries forward these results and compares them with some well-known and novel regression methods. These other methods use sensible default, rather than optimized values for their parameters. The methods compared with PLSR are locally weighted PLS regression using 20 PLS components (LWPR), a variant of locally weighted learning that uses the PLS components to find nearest neighbors and selects the original data to build a linear regression model (LWPL), a random regression forest using PLS transformed data using 20 components (RRFP), and a number of techniques using untransformed data namely, Gaussian Processes (GP), Model trees (MT), and Support Vector Machine Regression (SVMR).
+
+\subsubsection{Results and Discussion}
+Table \ref{table_rmsep_pls} shows the number of PLS components that gave the best results in terms of RMSEP. It is interesting to note that as the size of the dataset increases so too does the number of components needed to get the best results. Table \ref{table_all_methods} summarizes the findings of comparing the best PLS regression results against the other methods. As can be seen, PLS regression is only competitive on the smallest dataset. Gaussian Processes and LWPL with default parameters are clearly superior on larger datasets. The advantages gained by Gaussian Processes and LWPL in terms of RMSEP come at a cost. Model sizes for GP are quadratic in the number of samples, if predictions as well as prediction intervals are to be computed, or linear, if prediction intervals are not required; model sizes for LWPL are always linear in the number of samples. In an operational setting where hundreds of models are needed in memory or where models need frequent training, this can be a significant barrier to their deployment.
+
+\begin{figure}[htb]
+  \center
+  \begin{tabular}{ l | r | r }
+  \hline
+  Dataset & Size (\# of samples) & Optimum \# PLS components \\
+  \hline
+  LACTIC & 255 & 6 \\
+  STORIG & 414 & 39 \\
+  SS & 895 & 49 \\
+  OMD & 1010 & 62 \\
+  DCAD & 2522 & 57 \\
+  K & 6363 & 63 \\
+  N & 7500 & 63 \\
+  \hline
+  \end{tabular}
+  \caption{Comparison of RMSEP from varying the number of PLS components}
+  \label{table_rmsep_pls}
+\end{figure}
+
+\begin{figure}[htb]
+  \center
+  \begin{tabular}{ l | l | l }
+  \hline
+  Dataset & Best method(s) no sig diff & Worse methods i.e. sig diff \\
+  \hline
+  LACTIC & PLSR(6), MT, LWPL, RRFP, SVMR & GP, LWPR \\
+  STORIG & GP, LWPL & PLSR(39), MT, LWPR, RRFP, SVMR \\
+  SS & GP, LWPL & PLSR(49), MT, LWPR, RRFP, SVMR \\
+  OMD & GP, LWPL, LWPR, RRFP & PLSR(62), MT, SVMR \\
+  DCAD & GP & PLSR(57), MT, LWPR, RRFP, SVMR, LWPL \\
+  K & GP, LWPL & PLSR(63), MT, LWPR, RRFP, SVMR \\
+  N & GP & PLSR(63), MT, LWPR, RRFP, SVMR, LWPL \\
+  \hline
+  \end{tabular}
+  \caption{Comparison of all methods}
+  \label{table_all_methods}
+\end{figure}
 
 \end{itemize}
 
